@@ -881,34 +881,42 @@ envelope.addEventListener("keydown", function(event) {
 });
 letterBtn.addEventListener("click", toggleLetter);
 
-/* ALBUM ẢNH: NẾU FILE ẢNH KHÔNG TỒN TẠI, HIỂN THỊ Ô MẪU */
+
+/* ALBUM ẢNH: TẢI VÀ HIỂN THỊ ỔN ĐỊNH NGAY LẦN ĐẦU */
 document.querySelectorAll(".gallery-item").forEach(item => {
     const src = item.dataset.src;
-    const img = document.createElement("img");
-    img.src = src;
+    const placeholder = item.querySelector(".gallery-placeholder");
+    const img = new Image();
+
     img.alt = "Ảnh kỷ niệm A2K40";
-    img.loading = "lazy";
+    img.decoding = "async";
 
-    img.addEventListener("load", function() {
-        item.innerHTML = "";
-        item.appendChild(img);
-    });
+    // Giữ ô mẫu cho đến khi ảnh tải thành công.
+    img.onload = function () {
+        item.replaceChildren(img);
+    };
 
-    img.addEventListener("error", function() {
-        /* Giữ ô ảnh mẫu nếu file không tồn tại */
-    });
+    img.onerror = function () {
+        // Nếu tải lỗi, giữ nguyên ô mẫu để không làm vỡ giao diện.
+        console.warn("Không tải được ảnh:", src);
+    };
 
-    item.addEventListener("click", function() {
+    // Gán sự kiện trước khi đặt src để tránh bỏ lỡ sự kiện tải.
+    img.src = src;
+
+    item.addEventListener("click", function () {
         if (img.complete && img.naturalWidth > 0) {
-            document.getElementById("lightboxImage").src = src;
+            document.getElementById("lightboxImage").src = img.src;
             document.getElementById("lightbox").classList.add("show");
         } else {
-            alert("Chưa tìm thấy " + src + ". Hãy đặt ảnh vào cùng thư mục với file HTML nhé!");
+            alert(
+                "Ảnh " + src +
+                " chưa tải được. Hãy kiểm tra file ảnh và đường dẫn nhé!"
+            );
         }
     });
 });
 
-/* ĐÓNG LIGHTBOX */
 const lightbox = document.getElementById("lightbox");
 function closeLightbox() {
     lightbox.classList.remove("show");
@@ -937,24 +945,55 @@ function createFloatingHeart() {
 }
 setInterval(createFloatingHeart, 800);
 
-/* THÊM VIDEO YOUTUBE (TÙY CHỌN)
-   Nếu muốn dùng video, thay URL bên dưới bằng đường dẫn nhúng, ví dụ:
-   https://www.youtube.com/embed/VIDEO_ID
+
+/* VIDEO KỶ NIỆM A2K40
+   Tự phát, tắt tiếng và phát lặp lại.
+   Dùng video MP4 trực tiếp thay vì iframe.
 */
-const VIDEO_EMBED_URL = "https://www.image2url.com/r2/default/videos/1791729022591-e22a44e9-c263-4054-b235-41eed71b116f.mp4";
+const VIDEO_EMBED_URL =
+    "https://www.image2url.com/r2/default/videos/1791729022591-e22a44e9-c263-4054-b235-41eed71b116f.mp4";
+
 if (VIDEO_EMBED_URL.trim()) {
     const videoBox = document.getElementById("videoBox");
-    const iframe = document.createElement("iframe");
-    iframe.src = VIDEO_EMBED_URL;
-    iframe.title = "Video kỷ niệm lớp A2K40";
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-    iframe.allowFullscreen = true;
+    const video = document.createElement("video");
+
+    video.id = "classVideo";
+    video.src = VIDEO_EMBED_URL;
+    video.title = "Video kỷ niệm lớp A2K40";
+
+    video.autoplay = true;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.controls = true;
+    video.preload = "metadata";
+
+    // Luôn giữ video ở trạng thái tắt tiếng.
+    video.addEventListener("volumechange", function () {
+        if (!video.muted) {
+            video.muted = true;
+        }
+    });
+
+    // Video tự lấp đầy khung hiện tại.
+    video.style.position = "absolute";
+    video.style.inset = "0";
+    video.style.width = "100%";
+    video.style.height = "100%";
+    video.style.objectFit = "contain";
+    video.style.background = "#000";
+
     videoBox.innerHTML = "";
-    videoBox.appendChild(iframe);
+    videoBox.appendChild(video);
+
+    // Thử phát video; trình duyệt có thể hạn chế autoplay.
+    video.play().catch(function () {
+        // Nếu trình duyệt chặn tự phát,
+        // người xem có thể nhấn nút Play.
+    });
 }
 
-/* ĐỂ KIỂM TRA MÃ: XEM DANH SÁCH TRONG MẢNG girls Ở TRÊN.
-   Không nên dùng passcode HTML cho dữ liệu cần bảo mật thực sự. */
 </script>
 </body>
 </html>
