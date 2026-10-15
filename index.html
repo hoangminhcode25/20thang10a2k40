@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffe6ef">
+<title>20/10 - Thanh Xuân A2K40 💗</title>
+
+<style>
+:root {
+    --pink: #ff6fa5;
+    --pink-dark: #e84c8a;
+    --pink-light: #fff0f6;
+    --purple: #bd8cff;
+    --text: #713c5a;
+    --white: #fffafd;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg,#fff0f6,#ffe1ed,#f7eaff);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+.hidden { display: none !important; }
+
+/* MÀN HÌNH NHẬP MÃ */
+#passcodeScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background:
+        radial-gradient(circle at 20% 20%,#fff 0,transparent 25%),
+        radial-gradient(circle at 80% 80%,#f9d5ff 0,transparent 30%),
+        linear-gradient(135deg,#ffe5ef,#ffd2e5,#f1dcff);
+    transition: opacity .7s, visibility .7s;
+}
+#passcodeScreen.leaving {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.lock-card {
+    width: min(100%,450px);
+    padding: 35px 25px;
+    border: 2px solid #ffffffc9;
+    border-radius: 30px;
+    text-align: center;
+    background: #ffffffd9;
+    box-shadow: 0 20px 70px #d66a9c40;
+    backdrop-filter: blur(12px);
+    animation: cardAppear .8s ease;
+}
+.lock-icon { font-size: 65px; animation: heartbeat 1.8s infinite; }
+.lock-card h1 {
+    margin: 12px 0 8px;
+    color: var(--pink-dark);
+    font-size: clamp(25px,6vw,36px);
+}
+.lock-card p { line-height: 1.7; margin-bottom: 18px; }
+.lock-card .small { font-size: 13px; color: #a27691; }
+#passcodeInput {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ffd0e2;
+    border-radius: 15px;
+    outline: none;
+    background: white;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 8px 0 12px;
+}
+#passcodeInput:focus { border-color: var(--pink); box-shadow: 0 0 0 4px #ff91bb24; }
+.primary-btn {
+    border: none;
+    border-radius: 30px;
+    padding: 13px 24px;
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(135deg,#ff80b0,#c48cff);
+    box-shadow: 0 7px 20px #e77aa54a;
+    transition: transform .2s, box-shadow .2s;
+}
+.primary-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px #e77aa566; }
+#unlockBtn { width: 100%; }
+#passcodeMessage { min-height: 28px; margin-top: 12px; color: #df4282; font-weight: 600; }
+.lock-hearts { font-size: 23px; letter-spacing: 8px; margin-top: 12px; }
+
+/* HIỆU ỨNG */
+@keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+@keyframes cardAppear {
+    from { opacity: 0; transform: translateY(20px) scale(.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0); opacity: 0; }
+    15% { opacity: .8; }
+    100% { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
+}
+@keyframes sparkle {
+    0%,100% { opacity: .5; transform: scale(.9); }
+    50% { opacity: 1; transform: scale(1.08); }
+}
+@keyframes envelopeOpen {
+    from { transform: rotateX(0); }
+    to { transform: rotateX(180deg); }
+}
+.floating-heart {
+    position: fixed;
+    bottom: -35px;
+    z-index: 0;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+}
+
+/* HEADER */
+header {
+    position: relative;
+    overflow: hidden;
+    padding: 55px 20px 45px;
+    text-align: center;
+    background: linear-gradient(135deg,#ffb4d0,#ffd9e9,#e9d4ff);
+}
+header::before, header::after {
+    content: "✿";
+    position: absolute;
+    font-size: 100px;
+    color: #ffffff65;
+    animation: sparkle 3s infinite;
+}
+header::before { top: 0; left: 4%; }
+header::after { right: 5%; bottom: 0; }
+.header-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: #ffffff9c;
+    margin-bottom: 15px;
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+header h1 {
+    color: #c53f7d;
+    font-size: clamp(32px,7vw,62px);
+    text-shadow: 2px 3px 0 #ffffffad;
+    margin-bottom: 14px;
+}
+header p { max-width: 680px; margin: auto; line-height: 1.8; font-size: 17px; }
+.header-heart { margin-top: 18px; font-size: 27px; }
+
+/* THANH ĐIỀU HƯỚNG */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: #fffafdE8;
+    box-shadow: 0 4px 15px #b85d8715;
+    backdrop-filter: blur(10px);
+}
+nav a, nav button {
+    text-decoration: none;
+    color: #a94d79;
+    border: 1px solid #ffd1e3;
+    background: white;
+    border-radius: 25px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 600;
+}
+nav a:hover, nav button:hover { background: #ffe5ef; }
+
+/* BỐ CỤC */
+main { width: min(1100px,92%); margin: 0 auto; position: relative; z-index: 1; }
+section { padding: 48px 0; scroll-margin-top: 75px; }
+.section-title { text-align: center; margin-bottom: 25px; }
+.section-title h2 { color: #c64b83; font-size: clamp(25px,5vw,36px); margin-bottom: 10px; }
+.section-title p { color: #9b6c87; line-height: 1.7; }
+.panel {
+    padding: 25px;
+    border: 1px solid #ffffff;
+    border-radius: 24px;
+    background: #ffffffb8;
+    box-shadow: 0 10px 35px #d26d9b15;
+}
+
+/* LỜI CHÚC RIÊNG */
+.personal-card {
+    position: relative;
+    overflow: hidden;
+    padding: 30px 22px;
+    border-radius: 25px;
+    text-align: center;
+    background: linear-gradient(135deg,#fffafd,#ffe5f0,#f0e4ff);
+    border: 2px solid #fff;
+    box-shadow: 0 12px 35px #cf6e9b24;
+}
+.personal-card::before {
+    content: "♡";
+    position: absolute;
+    top: -20px;
+    right: 12px;
+    font-size: 120px;
+    color: #ff9ec52a;
+}
+.personal-card .avatar { font-size: 48px; margin-bottom: 8px; }
+.personal-card h2 { color: #d04483; font-size: clamp(24px,5vw,34px); margin-bottom: 14px; }
+.personal-card p { font-size: 17px; line-height: 1.9; position: relative; }
+.personal-card .signature { margin-top: 18px; color: #c64b83; font-weight: 700; }
+
+/* ĐẾM NGƯỢC */
+.countdown {
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 12px;
+    max-width: 650px;
+    margin: 25px auto 0;
+}
+.time-box {
+    background: #fff;
+    border: 1px solid #ffd6e5;
+    border-radius: 18px;
+    padding: 18px 8px;
+    text-align: center;
+    box-shadow: 0 7px 20px #d86b9b15;
+}
+.time-box strong { display: block; color: #d94e8c; font-size: clamp(25px,5vw,38px); }
+.time-box span { display: block; font-size: 12px; margin-top: 5px; }
+
+/* PHONG BÌ */
+.envelope-area { text-align: center; }
+.envelope {
+    position: relative;
+    width: min(300px,80vw);
+    height: 190px;
+    margin: 28px auto 20px;
+    cursor: pointer;
+    perspective: 900px;
+}
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: #ff9cbe;
+    box-shadow: 0 12px 25px #bd62852a;
+}
+.envelope-letter {
+    position: absolute;
+    left: 8%;
+    top: 8%;
+    width: 84%;
+    height: 82%;
+    padding: 20px 10px;
+    background: white;
+    border-radius: 8px;
+    transition: transform .7s, top .7s;
+    overflow: hidden;
+}
+.envelope-letter span { font-size: 36px; }
+.envelope-letter p { font-size: 13px; line-height: 1.6; }
+.envelope-front {
+    position: absolute;
+    inset: 0;
+    background: #ffbad1;
+    clip-path: polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);
+    border-radius: 8px;
+}
+.envelope-flap {
+    position: absolute;
+    inset: 0;
+    background: #ff80ad;
+    clip-path: polygon(0 0,100% 0,50% 58%);
+    transform-origin: top;
+    transition: transform .6s;
+}
+.envelope.open .envelope-flap { transform: rotateX(180deg); }
+.envelope.open .envelope-letter { top: -42%; transform: translateY(-8px); }
+#letterContent {
+    max-width: 700px;
+    margin: 25px auto 0;
+    padding: 25px;
+    background: white;
+    border-radius: 20px;
+    line-height: 1.9;
+    box-shadow: 0 10px 25px #c66d951b;
+}
+
+/* ALBUM */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 14px;
+}
+.gallery-item {
+    position: relative;
+    min-height: 150px;
+    aspect-ratio: 4 / 3;
+    border-radius: 17px;
+    overflow: hidden;
+    background: linear-gradient(135deg,#ffd9e8,#e7d9ff);
+    border: 3px solid white;
+    box-shadow: 0 6px 18px #b75e871c;
+    cursor: pointer;
+}
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s; }
+.gallery-item:hover img { transform: scale(1.07); }
+.gallery-placeholder {
+    width: 100%; height: 100%; min-height: 150px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: #b45180; font-size: 15px; text-align: center; padding: 10px;
+}
+.gallery-placeholder span { font-size: 35px; }
+.gallery-note { text-align: center; margin-top: 17px; font-size: 13px; color: #a27691; }
+
+/* THIỆP */
+.wish-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 15px;
+}
+.wish-card {
+    padding: 22px;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    background: linear-gradient(135deg,#fff,#fff0f6);
+    line-height: 1.8;
+}
+.wish-card .emoji { font-size: 30px; margin-bottom: 8px; }
+.wish-card h3 { color: #ce4d84; margin-bottom: 8px; }
+
+/* VIDEO */
+.video-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 20px;
+    background: linear-gradient(135deg,#ffd8e7,#e7d9ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+.video-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-placeholder { line-height: 1.8; }
+
+/* LIGHTBOX */
+#lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 11000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #2c1027e8;
+    padding: 20px;
+}
+#lightbox.show { display: flex; }
+#lightbox img { max-width: 95%; max-height: 85vh; border: 4px solid white; border-radius: 12px; }
+#closeLightbox {
+    position: absolute; top: 20px; right: 25px;
+    color: white; background: transparent; border: 0; font-size: 35px;
+}
+
+/* FOOTER */
+footer {
+    padding: 35px 20px;
+    text-align: center;
+    line-height: 2;
+    background: #ffe1ed;
+    color: #a64b77;
+}
+footer strong { color: #d04483; }
+
+@media(max-width:650px) {
+    header { padding: 45px 15px 35px; }
+    nav { gap: 6px; }
+    nav a, nav button { padding: 8px 10px; font-size: 12px; }
+    .gallery { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .wish-grid { grid-template-columns: 1fr; }
+    .panel { padding: 17px; }
+    section { padding: 35px 0; }
+    .countdown { gap: 7px; }
+    .time-box { padding: 14px 5px; }
+}
+@media(prefers-reduced-motion:reduce) {
+    *,*::before,*::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MÀN HÌNH PASSCODE -->
+<div id="passcodeScreen">
+    <div class="lock-card">
+        <div class="lock-icon">💌</div>
+        <h1>Women Day A2K40</h1>
+        <p>
+            Một món quà nhỏ dành riêng cho bạn nữ đặc biệt! 🌷<br>
+            Hãy nhập passcode của bạn để mở thiệp nhé.
+        </p>
+        <form id="passcodeForm">
+            <input id="passcodeInput" type="password"
+                   placeholder="NHẬP PASSCODE CỦA BẠN"
+                   autocomplete="off" autocapitalize="characters"
+                   aria-label="Nhập passcode" required>
+            <button class="primary-btn" id="unlockBtn" type="submit">💗 MỞ THIỆP 💗</button>
+        </form>
+        <div id="passcodeMessage" role="status" aria-live="polite"></div>
+        <p class="small">20/10 — Gửi ngàn yêu thương đến những bông hoa A2K40</p>
+        <div class="lock-hearts">💗 🌸 💖</div>
+    </div>
+</div>
+
+<!-- NHẠC NỀN: đặt file music.mp3 cạnh index.html -->
+<audio id="backgroundMusic" src="music.mp3" loop preload="auto"></audio>
+
+<header>
+    <div class="header-tag">🌷 20 THÁNG 10 · A2K40 🌷</div>
+    <h1>💗Women Day A2K40 💗</h1>
+    <p>
+        Gửi đến những bông hoa xinh đẹp của lớp A2K40.
+        Chúc các bạn luôn rạng rỡ, hạnh phúc và lưu giữ thật nhiều
+        kỷ niệm đẹp trong những năm tháng thanh xuân này.
+    </p>
+    <div class="header-heart">♡ 💗 ♡ 💕 ♡</div>
+</header>
+
+<nav>
+    <a href="#loiChucRieng">💌 Lời chúc của bạn</a>
+    <a href="#countdownSection">⏳ Đếm ngược</a>
+    <a href="#letterSection">✉️ Phong bì thư</a>
+    <a href="#gallerySection">📸 Album ảnh</a>
+    <a href="#wishesSection">🌸 Lời chúc chung</a>
+    <a href="#videoSection">🎬 Kỷ niệm</a>
+    <button type="button" id="musicToggle">🎵 Nhạc: BẬT</button>
+</nav>
+
+<main>
+    <!-- LỜI CHÚC RIÊNG CỦA NGƯỜI NHẬP MÃ -->
+    <section id="loiChucRieng">
+        <div class="section-title">
+            <h2>💌 Một món quà dành riêng cho bạn</h2>
+            <p>Mỗi bạn nữ có một chiếc thiệp và lời chúc riêng.</p>
+        </div>
+        <div class="personal-card">
+            <div class="avatar" id="personalAvatar">🌷</div>
+            <h2 id="personalTitle">Chúc mừng ngày 20/10!</h2>
+            <p id="personalWish">
+                Chúc bạn luôn xinh đẹp, vui vẻ và gặp thật nhiều điều tốt đẹp.
+            </p>
+            <p class="signature">Thân gửi từ anh em A2K40 💗</p>
+        </div>
+    </section>
+
+    <!-- ĐẾM NGƯỢC -->
+    <section id="countdownSection">
+        <div class="section-title">
+            <h2>⏳ Đếm ngược đến ngày 20/10</h2>
+            <p>Ngày đặc biệt dành cho những bông hoa tuyệt vời của chúng ta.</p>
+        </div>
+        <div class="countdown">
+            <div class="time-box"><strong id="days">00</strong><span>Ngày</span></div>
+            <div class="time-box"><strong id="hours">00</strong><span>Giờ</span></div>
+            <div class="time-box"><strong id="minutes">00</strong><span>Phút</span></div>
+            <div class="time-box"><strong id="seconds">00</strong><span>Giây</span></div>
+        </div>
+        <p id="countdownMessage" style="text-align:center;margin-top:18px;line-height:1.8;"></p>
+    </section>
+
+    <!-- PHONG BÌ THƯ -->
+    <section id="letterSection">
+        <div class="section-title">
+            <h2>✉️ Bức thư gửi những bông hoa A2K40</h2>
+            <p>Chạm vào phong bì để mở món quà yêu thương.</p>
+        </div>
+        <div class="panel envelope-area">
+            <div class="envelope" id="envelope" role="button" tabindex="0"
+                 aria-label="Mở phong bì thư">
+                <div class="envelope-back"></div>
+                <div class="envelope-letter">
+                    <span>💌</span>
+                    <p>Gửi những cô gái tuyệt vời của A2K40</p>
+                </div>
+                <div class="envelope-front"></div>
+                <div class="envelope-flap"></div>
+            </div>
+            <button class="primary-btn" type="button" id="letterBtn">MỞ BỨC THƯ 💗</button>
+            <div id="letterContent" class="hidden">
+                <h3 style="color:#ce4d84;margin-bottom:12px;">Gửi những bông hoa của A2K40 🌸</h3>
+                Nhân ngày Phụ nữ Việt Nam 20/10, chúc tất cả các bạn nữ của lớp
+                luôn xinh đẹp, tự tin, mạnh mẽ và hạnh phúc.
+                <br><br>
+                Mong rằng mỗi ngày đến trường đều là một ngày vui, mỗi kỷ niệm
+                cùng nhau đều trở thành một phần thanh xuân đáng nhớ.
+                Cảm ơn các bạn đã góp thêm sắc màu, tiếng cười và sự dịu dàng
+                cho tập thể A2K40.
+                <br><br>
+                Chúc các bạn luôn được yêu thương, luôn tỏa sáng theo cách riêng
+                của mình và đạt được những điều mà trái tim mong muốn.
+                <br><br>
+                <strong>Chúc mừng 20/10! A2K40 luôn tràn ngập yêu thương. 💗</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- ALBUM ẢNH -->
+    <section id="gallerySection">
+        <div class="section-title">
+            <h2>📸 Album ảnh thanh xuân</h2>
+            <p>Những khoảnh khắc đáng nhớ của tập thể A2K40.</p>
+        </div>
+        <div class="gallery" id="gallery">
+            <!-- Đặt ảnh anh1.jpg đến anh12.jpg cùng thư mục với index.html -->
+            <div class="gallery-item" data-src="anh1.jpg"><div class="gallery-placeholder"><span>🌸</span>Ảnh kỷ niệm 1</div></div>
+            <div class="gallery-item" data-src="anh2.jpg"><div class="gallery-placeholder"><span>💗</span>Ảnh kỷ niệm 2</div></div>
+            <div class="gallery-item" data-src="anh3.jpg"><div class="gallery-placeholder"><span>🌷</span>Ảnh kỷ niệm 3</div></div>
+            <div class="gallery-item" data-src="anh4.jpg"><div class="gallery-placeholder"><span>✨</span>Ảnh kỷ niệm 4</div></div>
+            <div class="gallery-item" data-src="anh5.jpg"><div class="gallery-placeholder"><span>🎀</span>Ảnh kỷ niệm 5</div></div>
+            <div class="gallery-item" data-src="anh6.jpg"><div class="gallery-placeholder"><span>🌹</span>Ảnh kỷ niệm 6</div></div>
+            <div class="gallery-item" data-src="anh7.jpg"><div class="gallery-placeholder"><span>💕</span>Ảnh kỷ niệm 7</div></div>
+            <div class="gallery-item" data-src="anh8.jpg"><div class="gallery-placeholder"><span>🦋</span>Ảnh kỷ niệm 8</div></div>
+            <div class="gallery-item" data-src="anh9.jpg"><div class="gallery-placeholder"><span>🌼</span>Ảnh kỷ niệm 9</div></div>
+            <div class="gallery-item" data-src="anh10.jpg"><div class="gallery-placeholder"><span>🎉</span>Ảnh kỷ niệm 10</div></div>
+            <div class="gallery-item" data-src="anh11.jpg"><div class="gallery-placeholder"><span>💐</span>Ảnh kỷ niệm 11</div></div>
+            <div class="gallery-item" data-src="anh12.jpg"><div class="gallery-placeholder"><span>💞</span>Ảnh kỷ niệm 12</div></div>
+        </div>
+        <p class="gallery-note">🎀</p>
+    </section>
+
+    <!-- LỜI CHÚC CHUNG -->
+    <section id="wishesSection">
+        <div class="section-title">
+            <h2>🌸 Những lời chúc yêu thương</h2>
+            <p>Gửi đến toàn thể các bạn nữ lớp A2K40.</p>
+        </div>
+        <div class="wish-grid">
+            <div class="wish-card">
+                <div class="emoji">🌷</div>
+                <h3>Luôn xinh đẹp</h3>
+                Chúc các bạn luôn rạng rỡ, tự tin, yêu thương bản thân và tỏa sáng
+                theo cách riêng của mình.
+            </div>
+            <div class="wish-card">
+                <div class="emoji">🍀</div>
+                <h3>Luôn may mắn</h3>
+                Mong mọi điều tốt lành sẽ đến, những dự định đều thuận lợi
+                và ước mơ sớm trở thành hiện thực.
+            </div>
+            <div class="wish-card">
+                <div class="emoji">💖</div>
+                <h3>Luôn hạnh phúc</h3>
+                Chúc các bạn luôn được yêu thương, có thật nhiều tiếng cười
+                và những người bạn chân thành bên cạnh.
+            </div>
+            <div class="wish-card">
+                <div class="emoji">🎓</div>
+                <h3>Thanh xuân rực rỡ</h3>
+                Chúc các cô gái A2K40 học tập thật tốt, vững tin vào bản thân
+                và tạo nên những kỷ niệm tuyệt đẹp.
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO KỶ NIỆM -->
+    <section id="videoSection">
+        <div class="section-title">
+            <h2>🎬 Góc kỷ niệm A2K40</h2>
+            <p>Nơi lưu giữ những khoảnh khắc đáng yêu của chúng ta.</p>
+        </div>
+        <div class="panel">
+            <div class="video-box" id="videoBox">
+                <div class="video-placeholder">
+                    <div style="font-size:45px;">🎞️💗</div>
+                    <strong>Video kỷ niệm lớp A2K40</strong>
+                    <p>Để thêm video YouTube, thay VIDEO_EMBED_URL trong code bằng đường dẫn nhúng của video.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div style="font-size:28px;">💗 🌸 💗</div>
+    <strong>20/10 — Thanh Xuân A2K40</strong>
+    <p>Một món quà nhỏ, gửi ngàn yêu thương đến các bạn nữ.</p>
+    <p>Thanh xuân có thể qua đi, nhưng kỷ niệm sẽ còn mãi. 💌</p>
+</footer>
+
+<!-- XEM ẢNH PHÓNG TO -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Ảnh phóng to">
+    <button id="closeLightbox" type="button" aria-label="Đóng ảnh">×</button>
+    <img id="lightboxImage" src="" alt="Ảnh kỷ niệm lớp A2K40">
+</div>
+
+<script>
+/* ==========================================================
+   DANH SÁCH PASSCODE RIÊNG CHO TỪNG BẠN NỮ
+   Đổi mã ở trường "code" và lời chúc ở trường "wish".
+   Mỗi mã phải khác nhau.
+   ========================================================== */
+
+const girls = [
+    {
+        name: "Kiều An", code: "1501",
+        wish: "Kiều An thân mến, chúc bạn ngày 20/10 thật ngọt ngào! Mong bạn luôn xinh đẹp, tự tin, gặp nhiều may mắn và có đủ dũng khí để theo đuổi mọi ước mơ. Hãy luôn mỉm cười vì bạn xứng đáng với những điều tốt đẹp nhất. 💗"
+    },
+    {
+        name: "Ngọc Anh", code: "1704",
+        wish: "Ngọc Anh ơi, chúc bạn luôn rạng rỡ như ánh nắng, dịu dàng như hoa và mạnh mẽ khi theo đuổi điều mình yêu thích. Mong mỗi ngày của bạn đều có niềm vui, những người bạn chân thành và thật nhiều điều đáng nhớ. 🌷"
+    },
+    {
+        name: "Quỳnh Anh", code: "0101",
+        wish: "Quỳnh Anh thân mến, chúc bạn một ngày 20/10 tràn ngập yêu thương. Mong nụ cười luôn ở trên môi, những dự định đều thuận lợi và thanh xuân của bạn có thật nhiều khoảnh khắc khiến bạn tự hào. 💕"
+    },
+    {
+        name: "Điệp Anh", code: "2711",
+        wish: "Điệp Anh nhé, chúc bạn luôn vui vẻ, đáng yêu và tự tin với nét riêng của mình. Mong bạn học tập thật tốt, gặp nhiều may mắn và mỗi ngày đều tìm thấy một lý do nhỏ để hạnh phúc. 🌸"
+    },
+    {
+        name: "Vân Anh", code: "1806",
+        wish: "Vân Anh thân mến, chúc bạn luôn bình an, xinh đẹp và gặp được thật nhiều điều tử tế. Hãy cứ sống hết mình, giữ trái tim ấm áp và biến những ước mơ của mình thành hiện thực nhé! 💖"
+    },
+    {
+        name: "Quỳnh Anh", code: "1112",
+        wish: "Gửi Quỳnh Anh, một lời chúc riêng dành cho bạn trong ngày 20/10. Chúc bạn luôn tỏa sáng, học tập tiến bộ, có thật nhiều tiếng cười và lưu giữ những kỷ niệm thanh xuân thật đẹp cùng A2K40. 🌷"
+    },
+    {
+        name: "Ngọc Ánh", code: "1006",
+        wish: "Ngọc Ánh ơi, chúc bạn luôn rực rỡ như tên gọi, tự tin bước về phía trước và không ngừng khám phá những điều tuyệt vời. Mong hạnh phúc sẽ tìm đến bạn trong những điều giản dị nhất. ✨"
+    },
+    {
+        name: "Thanh Chúc", code: "0512",
+        wish: "Thanh Chúc thân mến, chúc bạn một ngày 20/10 thật vui và ấm áp. Mong mọi lời chúc tốt đẹp đều thành hiện thực, mọi cố gắng đều được đền đáp và bạn luôn tự hào về chính mình. 💗"
+    },
+    {
+        name: "Huyền Diệu", code: "2603",
+        wish: "Huyền Diệu nhé, chúc bạn luôn giữ nét đáng yêu và sự lạc quan của mình. Mong những ngày sắp tới có nhiều bất ngờ dễ thương, những thành công nhỏ và thật nhiều khoảnh khắc tuyệt vời. 🦋"
+    },
+    {
+        name: "Kim Dung", code: "0310",
+        wish: "Kim Dung thân mến, chúc bạn luôn mạnh khỏe, xinh tươi, học tập tốt và gặp nhiều may mắn. Mong bạn luôn được yêu thương, được lắng nghe và có đủ tự tin để tỏa sáng theo cách riêng. 🌹"
+    },
+    {
+        name: "Ngân Giang", code: "1412",
+        wish: "Ngân Giang ơi, chúc bạn luôn bình yên, hạnh phúc và có thật nhiều niềm vui. Hy vọng thanh xuân của bạn sẽ đầy ắp tình bạn đẹp, tiếng cười và những ước mơ dần trở thành sự thật. 💐"
+    },
+    {
+        name: "Ngọc Hà", code: "2011",
+        wish: "Ngọc Hà thân mến, chúc bạn luôn dịu dàng nhưng cũng thật kiên cường, luôn tin vào bản thân và không ngại thử sức với điều mới. Chúc bạn có ngày 20/10 ngọt ngào cùng những điều tuyệt vời nhất. 💕"
+    },
+    {
+        name: "Thanh Hải", code: "1011",
+        wish: "Thanh Hải nhé, chúc bạn luôn tươi vui như bầu trời trong xanh, tự tin với lựa chọn của mình và đón nhận thật nhiều cơ hội tốt đẹp. Mong mỗi ngày đến lớp đều là một kỷ niệm đáng nhớ. 🌼"
+    },
+    {
+        name: "Ngọc Hân", code: "0506",
+        wish: "Ngọc Hân ơi, chúc bạn luôn xinh đẹp, vui vẻ và gặp nhiều người yêu thương, trân trọng bạn. Mong mọi bài kiểm tra đều thuận lợi, mọi kế hoạch đều tiến triển và trái tim luôn tràn đầy hy vọng. 💖"
+    },
+    {
+        name: "Vũ Hoa", code: "3001",
+        wish: "Vũ Hoa thân mến, chúc bạn nở rộ như một đóa hoa, luôn tự tin và tỏa ra nguồn năng lượng tích cực. Mong bạn có một ngày 20/10 thật đáng yêu và một năm học thật nhiều thành công. 🌷"
+    },
+    {
+        name: "Ánh Hồng", code: "0508",
+        wish: "Ánh Hồng nhé, chúc cuộc sống của bạn luôn ngập tràn sắc hồng của niềm vui, tình yêu thương và hy vọng. Mong bạn luôn được là chính mình, được trân trọng và đạt được những điều mình mong ước. 🎀"
+    },
+    {
+        name: "Khánh Huyền", code: "1606",
+        wish: "Khánh Huyền thân mến, chúc bạn luôn rạng rỡ, mạnh mẽ và kiên định với mục tiêu của mình. Mong hành trình phía trước có nhiều cơ hội mới, những người bạn tốt và những niềm vui bất ngờ. 💗"
+    },
+    {
+        name: "Mai Hương", code: "1512",
+        wish: "Mai Hương ơi, chúc bạn luôn thơm ngát như một đóa hoa, mang đến niềm vui cho mọi người và nhận lại thật nhiều yêu thương. Mong bạn luôn hạnh phúc, học tốt và tự tin vào tương lai. 🌺"
+    },
+    {
+        name: "Kim Khánh", code: "0912",
+        wish: "Kim Khánh thân mến, chúc bạn luôn may mắn, tỏa sáng và gặt hái nhiều thành quả xứng đáng với nỗ lực của mình. Hãy giữ nụ cười thật tươi và tận hưởng những khoảnh khắc đẹp của tuổi học trò nhé! ✨"
+    },
+    {
+        name: "Khánh Linh", code: "0311",
+        wish: "Khánh Linh nhé, chúc bạn luôn vui vẻ, tự tin và có thật nhiều trải nghiệm đáng nhớ. Mong những ngày đi học luôn đầy ắp tiếng cười, những tình bạn đẹp sẽ theo bạn thật lâu. 💕"
+    },
+    {
+        name: "Phương Linh", code: "2803",
+        wish: "Phương Linh thân mến, chúc bạn luôn xinh tươi, bình an và thành công trên con đường mình chọn. Mong bạn đủ tự tin để thử sức, đủ kiên trì để tiến lên và đủ hạnh phúc để mỉm cười mỗi ngày. 🌸"
+    },
+    {
+        name: "Thùy Linh", code: "2708",
+        wish: "Thùy Linh ơi, chúc bạn có một ngày 20/10 ngọt ngào và nhiều bất ngờ. Mong mọi điều tốt đẹp luôn đồng hành cùng bạn, từ những niềm vui giản dị đến những thành công lớn lao. 💗"
+    },
+    {
+        name: "Hoàng Linh", code: "1501",
+        wish: "Hoàng Linh thân mến, chúc bạn luôn giữ được sự tươi sáng, lạc quan và lòng can đảm. Hãy tin rằng những nỗ lực hôm nay sẽ đưa bạn đến một tương lai rực rỡ. Chúc bạn luôn hạnh phúc! 🌷"
+    },
+    {
+        name: "Thảo My", code: "2101",
+        wish: "Thảo My nhé, chúc bạn luôn đáng yêu, tự tin và gặp nhiều điều may mắn. Mong thanh xuân của bạn có thật nhiều tiếng cười, những chuyến đi vui vẻ và kỷ niệm đẹp cùng bạn bè. 💐"
+    },
+    {
+        name: "Hoàng Ngân", code: "1310",
+        wish: "Hoàng Ngân thân mến, chúc bạn luôn tỏa sáng bằng tài năng và sự tử tế của mình. Mong bạn học tập thật tốt, theo đuổi được những điều yêu thích và luôn được mọi người yêu quý. 💖"
+    },
+    {
+        name: "Hà Ngân", code: "2308",
+        wish: "Hà Ngân ơi, chúc bạn luôn vui vẻ, mạnh khỏe và có thật nhiều điều để mong chờ mỗi ngày. Hy vọng những ước mơ của bạn sẽ dần thành hiện thực và thanh xuân luôn là khoảng thời gian thật đáng nhớ. 🌼"
+    },
+    {
+        name: "Thanh Ngân", code: "1108",
+        wish: "Thanh Ngân thân mến, chúc bạn luôn bình an, xinh đẹp và gặp nhiều may mắn. Mong trái tim bạn luôn có niềm tin, những người bên cạnh luôn chân thành và tương lai có thật nhiều cánh cửa tốt đẹp. 💕"
+    },
+    {
+        name: "Lê Phương", code: "2512",
+        wish: "Lê Phương nhé, chúc bạn ngày càng tự tin, học tập tiến bộ và luôn tìm thấy niềm vui trong những điều nhỏ bé. Mong bạn có một ngày 20/10 thật nhiều yêu thương và một thanh xuân rực rỡ. 🌹"
+    },
+    {
+        name: "Minh Phượng", code: "0307",
+        wish: "Minh Phượng thân mến, chúc bạn luôn tươi tắn, lạc quan và kiên trì với mục tiêu của mình. Mong mỗi cố gắng đều mang lại kết quả tốt đẹp và mỗi ngày đều có những khoảnh khắc khiến bạn mỉm cười. 🌷"
+    },
+    {
+        name: "Hải Phượng", code: "0903",
+        wish: "Hải Phượng ơi, chúc bạn luôn mạnh mẽ, dịu dàng và hạnh phúc theo cách riêng. Mong bạn có thật nhiều may mắn trong học tập, thật nhiều tình bạn chân thành và những kỷ niệm khó quên cùng A2K40. 💗"
+    },
+    {
+        name: "Thanh Thảo", code: "2509",
+        wish: "Thanh Thảo thân mến, chúc bạn luôn đáng yêu, tự tin và tràn đầy năng lượng. Mong những điều giản dị cũng đủ làm bạn vui, những ước mơ luôn có động lực để theo đuổi và những ngày tháng học trò thật đẹp. 🌸"
+    },
+    {
+        name: "Thu Thảo", code: "2306",
+        wish: "Thu Thảo nhé, chúc bạn một ngày 20/10 thật ấm áp. Mong bạn luôn gặp được những người tốt, có nhiều trải nghiệm vui vẻ, học tập thuận lợi và luôn giữ được nụ cười tươi của mình. 💖"
+    },
+    {
+        name: "Thanh Thủy", code: "0101a",
+        wish: "Thanh Thủy thân mến, chúc bạn luôn trong trẻo, bình yên và tràn đầy hy vọng như dòng nước mát lành. Mong bạn tự tin tiến về phía trước, gặp nhiều may mắn và có một thanh xuân thật đáng nhớ. 🦋"
+    },
+    {
+        name: "Hà Trang", code: "2604",
+        wish: "Hà Trang ơi, chúc bạn luôn xinh đẹp, hạnh phúc và rạng rỡ. Mong mọi nỗ lực đều được đền đáp, mọi ước mơ đều có cơ hội nở hoa và những năm tháng cùng A2K40 sẽ luôn là ký ức ngọt ngào. 💗"
+    }
+];
+
+/* TẠO BẢN ĐỒ PASSCODE, KHÔNG PHÂN BIỆT CHỮ HOA/THƯỜNG */
+const passcodeMap = new Map();
+girls.forEach(girl => {
+    passcodeMap.set(girl.code.trim().toUpperCase(), girl);
+});
+
+/* MỞ KHÓA VÀ HIỂN THỊ LỜI CHÚC ĐÚNG NGƯỜI */
+const passcodeScreen = document.getElementById("passcodeScreen");
+const passcodeForm = document.getElementById("passcodeForm");
+const passcodeInput = document.getElementById("passcodeInput");
+const passcodeMessage = document.getElementById("passcodeMessage");
+const music = document.getElementById("backgroundMusic");
+const musicToggle = document.getElementById("musicToggle");
+
+let currentGirl = null;
+let musicEnabled = true;
+
+passcodeForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const code = passcodeInput.value.trim().toUpperCase();
+    const girl = passcodeMap.get(code);
+
+    if (!girl) {
+        passcodeMessage.textContent = "Mã chưa đúng rồi, bạn kiểm tra lại nhé! 💗";
+        passcodeInput.value = "";
+        passcodeInput.focus();
+        return;
+    }
+
+    currentGirl = girl;
+    passcodeMessage.textContent = "Đang mở món quà dành riêng cho " + girl.name + "... 🌸";
+
+    document.getElementById("personalTitle").textContent =
+        "Gửi " + girl.name + " thân mến 💗";
+    document.getElementById("personalWish").textContent = girl.wish;
+    document.getElementById("personalAvatar").textContent = "💐";
+
+    /* Đóng màn hình khóa */
+    passcodeScreen.classList.add("leaving");
+    document.body.style.overflow = "auto";
+
+    setTimeout(() => {
+        passcodeScreen.classList.add("hidden");
+        document.getElementById("loiChucRieng").scrollIntoView({ behavior: "smooth" });
+    }, 650);
+
+    /* Phát nhạc sau thao tác của người dùng.
+       Trình duyệt có thể chặn tự phát nhạc, vì vậy có nút bật/tắt để phát lại. */
+    if (musicEnabled) {
+        music.play().then(() => {
+            musicToggle.textContent = "🎵 Nhạc: BẬT";
+        }).catch(() => {
+            musicToggle.textContent = "🎵 Nhấn để phát nhạc";
+        });
+    }
+});
+
+/* NHẠC NỀN */
+musicToggle.addEventListener("click", function() {
+    if (music.paused) {
+        musicEnabled = true;
+        music.play().then(() => {
+            musicToggle.textContent = "🎵 Nhạc: BẬT";
+        }).catch(() => {
+            musicToggle.textContent = "🎵 Không phát được nhạc";
+        });
+    } else {
+        musicEnabled = false;
+        music.pause();
+        musicToggle.textContent = "🎵 Nhạc: TẮT";
+    }
+});
+
+/* ĐẾM NGƯỢC ĐẾN NGÀY 20/10 TIẾP THEO */
+function updateCountdown() {
+    const now = new Date();
+    let target = new Date(now.getFullYear(), 9, 20, 0, 0, 0);
+
+    if (now >= target) {
+        target = new Date(now.getFullYear() + 1, 9, 20, 0, 0, 0);
+    }
+
+    const diff = Math.max(0, target.getTime() - now.getTime());
+    const day = Math.floor(diff / 86400000);
+    const hour = Math.floor((diff % 86400000) / 3600000);
+    const minute = Math.floor((diff % 3600000) / 60000);
+    const second = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById("days").textContent = String(day).padStart(2, "0");
+    document.getElementById("hours").textContent = String(hour).padStart(2, "0");
+    document.getElementById("minutes").textContent = String(minute).padStart(2, "0");
+    document.getElementById("seconds").textContent = String(second).padStart(2, "0");
+
+    document.getElementById("countdownMessage").textContent =
+        day === 0 && hour === 0 && minute === 0 && second === 0
+        ? "Chúc mừng ngày 20/10! Chúc các bạn nữ luôn hạnh phúc! 💗"
+        : "Cùng chờ đón ngày đặc biệt với thật nhiều yêu thương nhé! 🌷";
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* PHONG BÌ THƯ */
+const envelope = document.getElementById("envelope");
+const letterBtn = document.getElementById("letterBtn");
+const letterContent = document.getElementById("letterContent");
+let letterOpened = false;
+
+function toggleLetter() {
+    letterOpened = !letterOpened;
+    envelope.classList.toggle("open", letterOpened);
+    letterContent.classList.toggle("hidden", !letterOpened);
+    letterBtn.textContent = letterOpened ? "ĐÓNG BỨC THƯ 💌" : "MỞ BỨC THƯ 💗";
+}
+envelope.addEventListener("click", toggleLetter);
+envelope.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleLetter();
+    }
+});
+letterBtn.addEventListener("click", toggleLetter);
+
+/* ALBUM ẢNH: NẾU FILE ẢNH KHÔNG TỒN TẠI, HIỂN THỊ Ô MẪU */
+document.querySelectorAll(".gallery-item").forEach(item => {
+    const src = item.dataset.src;
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = "Ảnh kỷ niệm A2K40";
+    img.loading = "lazy";
+
+    img.addEventListener("load", function() {
+        item.innerHTML = "";
+        item.appendChild(img);
+    });
+
+    img.addEventListener("error", function() {
+        /* Giữ ô ảnh mẫu nếu file không tồn tại */
+    });
+
+    item.addEventListener("click", function() {
+        if (img.complete && img.naturalWidth > 0) {
+            document.getElementById("lightboxImage").src = src;
+            document.getElementById("lightbox").classList.add("show");
+        } else {
+            alert("Chưa tìm thấy " + src + ". Hãy đặt ảnh vào cùng thư mục với file HTML nhé!");
+        }
+    });
+});
+
+/* ĐÓNG LIGHTBOX */
+const lightbox = document.getElementById("lightbox");
+function closeLightbox() {
+    lightbox.classList.remove("show");
+    document.getElementById("lightboxImage").src = "";
+}
+document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", function(event) {
+    if (event.target === lightbox) closeLightbox();
+});
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") closeLightbox();
+});
+
+/* HIỆU ỨNG TRÁI TIM BAY */
+function createFloatingHeart() {
+    const heart = document.createElement("div");
+    heart.className = "floating-heart";
+    const symbols = ["💗","💕","💖","🌸","✨","💞"];
+    heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (14 + Math.random() * 20) + "px";
+    heart.style.animationDuration = (7 + Math.random() * 7) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 15000);
+}
+setInterval(createFloatingHeart, 800);
+
+/* THÊM VIDEO YOUTUBE (TÙY CHỌN)
+   Nếu muốn dùng video, thay URL bên dưới bằng đường dẫn nhúng, ví dụ:
+   https://www.youtube.com/embed/VIDEO_ID
+*/
+const VIDEO_EMBED_URL = "https://www.image2url.com/r2/default/videos/1791729022591-e22a44e9-c263-4054-b235-41eed71b116f.mp4";
+if (VIDEO_EMBED_URL.trim()) {
+    const videoBox = document.getElementById("videoBox");
+    const iframe = document.createElement("iframe");
+    iframe.src = VIDEO_EMBED_URL;
+    iframe.title = "Video kỷ niệm lớp A2K40";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    videoBox.innerHTML = "";
+    videoBox.appendChild(iframe);
+}
+
+/* ĐỂ KIỂM TRA MÃ: XEM DANH SÁCH TRONG MẢNG girls Ở TRÊN.
+   Không nên dùng passcode HTML cho dữ liệu cần bảo mật thực sự. */
+</script>
+</body>
+</html>
